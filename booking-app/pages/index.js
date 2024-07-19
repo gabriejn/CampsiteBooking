@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import EmailSearchInput from './EmailSearch';
+import Head from 'next/head';
+import DisplayCollection from './displaycollection';
+import EmailSearchAndCollection from './emailsearchtest';
+const Home = () => {
+  return (
+    <div>  <DisplayCollection />
+    <EmailSearchAndCollection />
+      <Head>
+        <title>My Next.js App</title>
+        <meta name="description" content="Welcome to my Next.js app!" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-const HomePage = () => {
-    const handleEmailSearch = (email) => {
-        // Implement your Firebase query logic here
-        console.log('Searching for email:', email);
-        // ...
-    };
-
-    return (
-        <div>
-            <h1>Search for User by Email</h1>
-            <EmailSearchInput onSearch={handleEmailSearch} />
-            {/* Display search results or other components */}
-        </div>
-    );
+      
+    </div>
+  );
 };
 
-export default HomePage;
+export default Home;
