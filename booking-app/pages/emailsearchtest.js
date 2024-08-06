@@ -1,9 +1,7 @@
-// EmailSearchAndCollection.js
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { db } from '@/firebase_setup/firebase'; // Adjust the path based on your project structure
-import { collection, getDocs } from 'firebase/firestore';
-
+import { collection, query, where, getDocs } from 'firebase/firestore';
+//as long as firebase config file is set up and you are connected to intenet we can search for a resevation booking through Contact: email 
 const EmailSearchAndCollection = () => {
   const [email, setEmail] = useState('');
   const [collectionData, setCollectionData] = useState([]);
@@ -14,26 +12,26 @@ const EmailSearchAndCollection = () => {
 
   const handleSearch = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, 'Campsites')); 
+      const q = query(collection(db, 'Bookings'), where('Contact ', '==', email));
+      const querySnapshot = await getDocs(q);
       const data = [];
       querySnapshot.forEach((doc) => {
         data.push(doc.data());
       });
       setCollectionData(data);
+      
+      console.log(data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-
-  useEffect(() => {
-
-    handleSearch();
-  }, []);
-
+ //input displayed on (html)
   return (
     <div>
+      
       <div>
-        <input
+      
+        <input 
           type="text"
           placeholder="Enter email address"
           value={email}
@@ -41,9 +39,15 @@ const EmailSearchAndCollection = () => {
         />
         <button onClick={handleSearch}>Search</button>
       </div>
+      <ul>
+      {collectionData.map((booking) => (
+  <li key={booking.id}>{booking}</li>
 
-  
+        ))}
+      </ul>
     </div>
+    //return the table where the email is correct. Need to put in an error catch or no res found
+
   );
 };
 
